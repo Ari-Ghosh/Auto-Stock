@@ -1,10 +1,3 @@
-# Importing the libraries
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from math import floor
-from termcolor import colored as cl
-
 from data_extraction import get_historical_data
 from macd_plot import plot_macd
 from stochastoc_oscillator import get_stoch_osc
