@@ -2,7 +2,8 @@ from data_extraction import get_historical_data
 from macd_plot import plot_macd
 from stochastoc_oscillator import get_stoch_osc
 from macd_calculation import get_macd
-from trading_strategy import trading_strategy
+from trading_strategy import macd_trading_strategy
+from trading_list_plot import plot_trade
 
 
 
@@ -22,20 +23,22 @@ print(testdf)
 
 
 
-traindf['macd'] = get_macd(traindf['Close'], 26, 12, 9)[0]
-traindf['macd_signal'] = get_macd(traindf['Close'], 26, 12, 9)[1]
-traindf['macd_hist'] = get_macd(traindf['Close'], 26, 12, 9)[2]
+slow = 26
+fast = 12
+smooth = 9
+
+traindf = get_macd(traindf['Close'], slow, fast, smooth)
 traindf = traindf.dropna()
 
-validationdf['macd'] = get_macd(validationdf['Close'], 26, 12, 9)[0]
-validationdf['macd_signal'] = get_macd(validationdf['Close'], 26, 12, 9)[1]
-validationdf['macd_hist'] = get_macd(validationdf['Close'], 26, 12, 9)[2]
+validationdf = get_macd(validationdf['Close'], slow, fast, smooth)
 validationdf = validationdf.dropna()
 
-testdf['macd'] = get_macd(testdf['Close'], 26, 12, 9)[0]
-testdf['macd_signal'] = get_macd(testdf['Close'], 26, 12, 9)[1]
-testdf['macd_hist'] = get_macd(testdf['Close'], 26, 12, 9)[2]
+testdf = get_macd(testdf['Close'], slow, fast, smooth)
 testdf = testdf.dropna()
+
+print(traindf)
+print(validationdf)
+print(testdf)
 
 
 
@@ -43,4 +46,6 @@ plot_macd(traindf['Close'], traindf['macd'], traindf['macd_signal'], traindf['ma
 
 
 
-trading_strategy(testdf)
+buy_price, sell_price, macd_signal = macd_trading_strategy(testdf['Close'], testdf['%k'], testdf['%d'], testdf['macd'], testdf['macd_signal'])
+
+plot_trade(testdf['Close'], testdf['macd'], testdf['macd_signal'], testdf['macd_hist'], buy_price, sell_price)

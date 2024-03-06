@@ -6,4 +6,6 @@ def get_macd(price, slow, fast, smooth):
     macd = pd.DataFrame(exp1 - exp2).rename(columns={'Close': 'macd'})
     signal = pd.DataFrame(macd.ewm(span=smooth, adjust=False).mean()).rename(columns={'macd': 'signal'})
     hist = pd.DataFrame(macd['macd'] - signal['signal']).rename(columns={0: 'hist'})
-    return macd, signal, hist
+    frames = [macd, signal, hist]
+    df = pd.concat(frames, join='inner', axis=1)
+    return df
