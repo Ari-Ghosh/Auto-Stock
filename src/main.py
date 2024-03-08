@@ -5,11 +5,21 @@ from macd_calculation import get_macd
 from trading_strategy import macd_trading_strategy
 from trading_list_plot import plot_trade
 
+stock_symbol = '^NSEI'
+slow = 26
+fast = 12
+smooth = 9
+
+# PARAMETER GRID
+slow_range = range(10, 31, 2)
+fast_range = range(5, 21, 2)
+smooth_range = range(5, 16, 2)
 
 
-traindf, validationdf, testdf = get_historical_data('^NSEI')
-
+traindf, validationdf, testdf = get_historical_data(stock_symbol)
 print(traindf)
+print(validationdf)
+print(testdf)
 
 
 
@@ -21,11 +31,6 @@ print(traindf)
 print(validationdf)
 print(testdf)
 
-
-
-slow = 26
-fast = 12
-smooth = 9
 
 traindf = get_macd(traindf['Close'], slow, fast, smooth)
 traindf = traindf.dropna()
@@ -42,10 +47,10 @@ print(testdf)
 
 
 
-plot_macd(traindf['Close'], traindf['macd'], traindf['macd_signal'], traindf['macd_hist'])
+# plot_macd(traindf['Close'], traindf['macd'], traindf['signal'], traindf['hist'])
 
 
 
-buy_price, sell_price, macd_signal = macd_trading_strategy(testdf['Close'], testdf['%k'], testdf['%d'], testdf['macd'], testdf['macd_signal'])
+# buy_price, sell_price, macd_signal = macd_trading_strategy(testdf['Close'], testdf['%k'], testdf['%d'], testdf['macd'], testdf['signal'])
 
-plot_trade(testdf['Close'], testdf['macd'], testdf['macd_signal'], testdf['macd_hist'], buy_price, sell_price)
+# plot_trade(testdf['Close'], testdf['macd'], testdf['macd_signal'], testdf['macd_hist'], buy_price, sell_price)

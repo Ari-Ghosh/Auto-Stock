@@ -5,10 +5,14 @@ import numpy as np
 import requests
 import matplotlib.pyplot as plt
 from math import floor
-from termcolor import colored as cl
 
 plt.style.use('fivethirtyeight')
 plt.rcParams['figure.figsize'] = (20,10)
+
+#PARAMETERS
+slow = 26
+fast = 12
+smooth = 9
 
 # EXTRACTING STOCK DATA
 
@@ -62,9 +66,9 @@ def get_macd(price, slow, fast, smooth):
     hist = pd.DataFrame(macd['macd'] - signal['signal']).rename(columns = {0:'hist'})
     return macd, signal, hist
 
-aapl['macd'] = get_macd(aapl['close'], 26, 12, 9)[0]
-aapl['macd_signal'] = get_macd(aapl['close'], 26, 12, 9)[1]
-aapl['macd_hist'] = get_macd(aapl['close'], 26, 12, 9)[2]
+aapl['macd'] = get_macd(aapl['close'], slow, fast, smooth)[0]
+aapl['macd_signal'] = get_macd(aapl['close'], slow, fast, smooth)[1]
+aapl['macd_hist'] = get_macd(aapl['close'], slow, fast, smooth)[2]
 aapl = aapl.dropna()
 aapl.tail()
 
